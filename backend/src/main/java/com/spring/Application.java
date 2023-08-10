@@ -26,7 +26,7 @@ public class Application {
 			Patron john = new Patron(
 					faker.name().fullName().toLowerCase(),
 					faker.internet().safeEmailAddress(),
-					random.nextInt(18,75)
+					random.nextInt(18,76)
 			);
 
 			List<Patron> patrons = List.of(john);
