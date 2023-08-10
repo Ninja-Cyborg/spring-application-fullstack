@@ -15,7 +15,7 @@
       "environment": [
         {
           "name": "SPRING_DATASOURCE_URL",
-          "value": "jdbc:postgresql://localhost:5432/patron"
+          "value": "jdbc:postgresql://awseb-e-exe22wgrgy-stack-awsebrdsdatabase-2gpfsp2wbcne.cph7lrr0ak8g.us-east-1.rds.amazonaws.com:5432/patron"
         }
       ]
     }
