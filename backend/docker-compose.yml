@@ -1,0 +1,35 @@
+services:
+  db:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: ninja-cyborg
+      POSTGRES_PASSWORD: root
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+  application-api:
+    container_name: ninjacyborg
+    image: ninjacyborg/application-api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/patron
+    ports:
+      - "8088:8081"
+    networks:
+      - postgres
+    depends_on:
+      - db
+    restart: unless-stopped
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:
