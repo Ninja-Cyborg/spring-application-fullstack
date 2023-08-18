@@ -16,13 +16,16 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = RANDOM_PORT)
 public class PatronIntegrationTest {
 
     @Autowired
     private WebTestClient webTestClient;
+
     private static final String PATRON_URI = "/api/v1/patrons";
+
     @Test
     void canRegisterPatron(){
         // create registration request
@@ -31,12 +34,13 @@ public class PatronIntegrationTest {
         String email = faker.internet().safeEmailAddress();
         int age = faker.random().nextInt(16,100);
 
-        // temp id
-        int assignedId = faker.random().nextInt(2,10);
         PatronRegistrationRequest request = new PatronRegistrationRequest(
                  name, email,age
         );
         // POST request to web Client
+
+        // error source?? flaw in post request?
+
         webTestClient.post()
                 .uri(PATRON_URI)
                 .accept(MediaType.APPLICATION_JSON)
@@ -58,14 +62,17 @@ public class PatronIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        Patron expectedPatron = new Patron(assignedId, name, email, age);
+        Patron expectedPatron = new Patron( name, email, age);
 
         // verify patron is present/added
+        // sql preparedStatement not incrementing while deploying on github
+
         assertThat(patrons)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expectedPatron);
 
-        int id = patrons.stream().filter(c -> c.getEmail().equals(email))
+        int id = patrons.stream()
+                .filter(c -> c.getEmail().equals(email))
                 .map(Patron::getId)
                 .findFirst()
                 .orElseThrow();
