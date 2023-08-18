@@ -11,7 +11,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/patron
     username: postgres
-    password: root@postgrec5
+    password: rootpostgrec5
   jpa:
     hibernate:
       ddl-auto: create-drop
