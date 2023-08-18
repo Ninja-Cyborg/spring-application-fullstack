@@ -31,6 +31,8 @@ public class PatronIntegrationTest {
         String email = faker.internet().safeEmailAddress();
         int age = faker.random().nextInt(16,100);
 
+        // temp id
+        int assignedId = faker.random().nextInt(2,10);
         PatronRegistrationRequest request = new PatronRegistrationRequest(
                  name, email,age
         );
@@ -56,7 +58,7 @@ public class PatronIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        Patron expectedPatron = new Patron(name, email, age);
+        Patron expectedPatron = new Patron(assignedId, name, email, age);
 
         // verify patron is present/added
         assertThat(patrons)
