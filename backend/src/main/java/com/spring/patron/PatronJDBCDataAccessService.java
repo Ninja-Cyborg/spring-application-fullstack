@@ -96,6 +96,12 @@ public class PatronJDBCDataAccessService implements PatronDao{
 
     @Override
     public boolean existsPersonWithId(Integer id) {
-        return false;
+        var sql = """
+                SELECT count(id)
+                FROM patron
+                WHERE id = ?
+                """;
+        int count = jdbcTemplate.queryForObject(sql, int.class, id);
+        return count > 0;
     }
 }
