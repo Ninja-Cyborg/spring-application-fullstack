@@ -92,11 +92,9 @@
 							<goal>start</goal>
 						</goals>
 						<configuration>
-							<excludes>
-								<exclude>
-									**/*JDBCDataAccessServiceTest.java
-								</exclude>
-							</excludes>
+<!--							<excludes>-->
+<!--								<exclude>**/*JDBCDataAccessServiceTest.java</exclude>-->
+<!--							</excludes>-->
 							<arguments>
 								<argument>--server.port=${tomcat.http.port}</argument>
 							</arguments>
