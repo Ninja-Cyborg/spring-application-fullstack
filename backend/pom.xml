@@ -14,13 +14,14 @@
 	<name>application</name>
 	<description>Java Spring Boot App</description>
 	<organization>
-		<url>http://ninjacyborg</url>
+		<url>https://ninjacyborg.com</url>
 	</organization>
 	<properties>
 		<java.version>17</java.version>
 		<docker.username>ninjacyborg</docker.username>
 		<docker.image.name>application-api</docker.image.name>
 		<docker.image.tag/>
+		<docker.image.version>1.0</docker.image.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -170,7 +171,7 @@
 						</platforms>
 					</from>
 					<to>
-						<image>docker.io/${docker.username}/${docker.image.name}:${docker.image.tag}</image>
+						<image>docker.io/${docker.username}/${docker.image.name}:${docker.image.version}</image>
 						<tags>
 							<tag>latest</tag>
 						</tags>

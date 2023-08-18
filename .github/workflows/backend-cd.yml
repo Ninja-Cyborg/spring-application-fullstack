@@ -32,6 +32,16 @@ jobs:
     steps:
       # setup git checkout and java cache
       - uses: actions/checkout@v3
+      - name: Slack commit message
+        run: >
+          curl -X POST -H 'Content-type: application/json'
+          --data '{"text":":github: https://github.com/Ninja-Cyborg/spring-application-fullstack/commit/${{ github.sha }} - ${{ github.event.head_commit.message }}"}' 
+          ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Send Slack Message for deployment initialisation
+        run: >
+          curl -X POST -H 'Content-type: application/json'
+          --data '{"text":"Deployment started :progress_bar: :docker:"}' 
+          ${{ secrets.SLACK_WEBHOOK_URL }}
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
@@ -46,6 +56,11 @@ jobs:
       - name: Set build number
         id: build-number
         run: echo "BUILD_NUMBER=$(date '+%d.%m.%Y.%H.%M.%S')" >> $GITHUB_OUTPUT
+      - name: Send Slack Message
+        run: >
+          curl -X POST -H 'Content-type: application/json' 
+          --data '{"text":":maven: Init Maven Build"}' 
+          ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Build package
         run: mvn -ntp -B verify -Ddocker.image.tag=${{steps.build-number.outputs.BUILD_NUMBER}} jib:build
       - name: Update/ substitutes Dockerrun.aws.json api image tag with build number
@@ -73,3 +88,14 @@ jobs:
           git add ../Dockerrun.aws.json
           git commit -m "Update Dockerrun.aws.json docker image with tag ${{ steps.build-number.outputs.BUILD_NUMBER }}"
           git push
+      - name: Send Slack Message
+        run: >
+          curl -X POST -H 'Content-type: application/json' 
+          --data '{"text":"Deployment and commit completed :github-check-mark: :party_blob: - aws beanstalk_env link"}' 
+          ${{ secrets.SLACK_WEBHOOK_URL }}
+          - name: Send Slack Message
+            if: always()
+            run: >
+              curl -X POST -H 'Content-type: application/json' 
+              --data '{"text":"Job Status ${{ job.status }}"}' 
+              ${{ secrets.SLACK_WEBHOOK_URL }}
