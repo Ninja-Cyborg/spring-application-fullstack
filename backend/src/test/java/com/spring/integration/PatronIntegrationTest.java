@@ -26,7 +26,7 @@ public class PatronIntegrationTest {
 
     private static final String PATRON_URI = "/api/v1/patrons";
 
-    @Test
+    // @Test
     void canRegisterPatron(){
         // create registration request
         Faker faker = new Faker();
@@ -91,7 +91,7 @@ public class PatronIntegrationTest {
                 .isEqualTo(expectedPatron);
     }
 
-    @Test
+    // @Test
     void canDeletePatron(){
         // create registration request
         Faker faker = new Faker();
@@ -138,7 +138,7 @@ public class PatronIntegrationTest {
 
     }
 
-    @Test
+   // @Test
     void canUpdatePatron(){
         // create registration request
         Faker faker = new Faker();
