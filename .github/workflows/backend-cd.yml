@@ -69,7 +69,7 @@ jobs:
           cat ../Dockerrun.aws.json
           sed -i -E 's_(ninjacyborg/application-api:)([^"]*)_\1'${{steps.build-number.outputs.BUILD_NUMBER}}'_' ../Dockerrun.aws.json
           echo "Dockerrun.aws.json after updating tag"
-          cat ../Dockerrun.aws.json
+          cat ../backend/Dockerrun.aws.json
       - name: Deploy to AWS Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
         with:
@@ -85,7 +85,7 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add ../Dockerrun.aws.json
+          git add ../backend/Dockerrun.aws.json
           git commit -m "Update Dockerrun.aws.json docker image with tag ${{ steps.build-number.outputs.BUILD_NUMBER }}"
           git push
       - name: Send Slack Message
