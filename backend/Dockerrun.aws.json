@@ -10,16 +10,12 @@
         {
           "hostPort": 80,
           "containerPort": 8081
-        },
-        {
-          "hostPort": 80,
-          "containerPort": 5432
         }
       ],
       "environment": [
         {
           "name": "SPRING_DATASOURCE_URL",
-          "value": "jdbc:postgresql://awseb-e-smwvvhupbv-stack-awsebrdsdatabase-5ezek4m17prt.cph7lrr0ak8g.us-east-1.rds.amazonaws.com:5432/patron"
+          "value": "jdbc:postgresql://awseb-e-smwvvhupbv-stack-awsebrdsdatabase-gp9qdmbkbhso.cph7lrr0ak8g.us-east-1.rds.amazonaws.com:5432/patron"
         }
       ]
     }
