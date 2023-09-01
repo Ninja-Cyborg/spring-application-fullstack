@@ -4,7 +4,7 @@ services:
     image: postgres:15.3
     environment:
       POSTGRES_USER: ninjacyborg
-      POSTGRES_PASSWORD: root
+      POSTGRES_PASSWORD: rootpass
       PGDATA: /data/postgres
     volumes:
       - db:/data/postgres

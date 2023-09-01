@@ -16,7 +16,7 @@ jobs:
         image: postgres:15.3
         env:
           POSTGRES_USER: ninjacyborg
-          POSTGRES_PASSWORD: root
+          POSTGRES_PASSWORD: rootpass
           POSTGRES_DB: patron
         ports:
           - 5432:5432

@@ -21,7 +21,7 @@ jobs:
         # db in elastic beanstalk
         env:
           POSTGRES_USER: ninjacyborg
-          POSTGRES_PASSWORD: root
+          POSTGRES_PASSWORD: rootpass
           POSTGRES_DB: patron
         ports:
           - 5432:5432

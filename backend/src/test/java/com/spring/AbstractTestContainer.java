@@ -37,7 +37,7 @@ public abstract class AbstractTestContainer {
             new PostgreSQLContainer<>("postgres:latest")
                     .withDatabaseName("patron-dao-unit-test")
                     .withUsername("ninjacyborg")
-                    .withPassword("root");
+                    .withPassword("rootpass");
 
     // mapping dataSource
     @DynamicPropertySource
