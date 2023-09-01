@@ -8,10 +8,19 @@ import {
     Text,
     Stack,
     Tag,
-    useColorModeValue,
+    useColorModeValue, useDisclosure,
 } from '@chakra-ui/react';
 
-export default function CardWithImage({id, name, email, age}) {
+import {useRef} from 'react'
+import {deletePatron} from "../services/client.js";
+import {errorNotification, successNotification} from "../services/notification.js";
+import UpdatePatronDrawer from "./patron/UpdatePatronDrawer.jsx";
+
+export default function CardWithImage({id, name, email, age, gender, image}) {
+    const randomGender = gender === "MALE" ? "men" : "women";
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const cancelRef = useRef()
+
     return (
         <Center py={6}>
             <Box
@@ -25,7 +34,7 @@ export default function CardWithImage({id, name, email, age}) {
                     h={'120px'}
                     w={'full'}
                     src={
-                        'https://images.unsplash.com/photo-1612865547334-09cb8cb455da?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
+                        `https://randomuser.me/api/portraits/thumb/${randomGender}/${randomImage}.jpg`
                     }
                     objectFit={'cover'}
                 />
@@ -49,9 +58,81 @@ export default function CardWithImage({id, name, email, age}) {
                             {name}
                         </Heading>
                         <Text color={'gray.500'}>{email}</Text>
-                        <Text color={'gray.500'}>Age {age}</Text>
+                        <Text color={'gray.500'}>Age {age} | {gender}</Text>
                     </Stack>
                 </Box>
+
+                <Stack direction={'row'} justify={'center'} spacing={6} p={4}>
+                    <Stack>
+                        <UpdatePatronDrawer
+                            initialValues={{ name, email, age }}
+                            patronId={id}
+                            fetchPatrons={fetchPatrons}
+                        />
+                    </Stack>
+                    <Stack>
+                        <Button
+                            bg={'red.400'}
+                            color={'white'}
+                            rounded={'full'}
+                            _hover={{
+                                transform: 'translateY(-2px)',
+                                boxShadow: 'lg'
+                            }}
+                            _focus={{
+                                bg: 'green.500'
+                            }}
+                            onClick={onOpen}
+                        >
+                            Delete
+                        </Button>
+                        <AlertDialog
+                            isOpen={isOpen}
+                            leastDestructiveRef={cancelRef}
+                            onClose={onClose}
+                        >
+                            <AlertDialogOverlay>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                                        Delete Patron
+                                    </AlertDialogHeader>
+
+                                    <AlertDialogBody>
+                                        Are you sure you want to delete {name}? You can't undo this action afterwards.
+                                    </AlertDialogBody>
+
+                                    <AlertDialogFooter>
+                                        <Button ref={cancelRef} onClick={onClose}>
+                                            Cancel
+                                        </Button>
+                                        <Button colorScheme='red' onClick={() => {
+                                            deletePatron(id).then(res => {
+                                                console.log(res)
+                                                successNotification(
+                                                    'Patron deleted',
+                                                    `${name} was successfully deleted`
+                                                )
+                                                fetchPatrons();
+
+                                            }).catch(err => {
+                                                console.log(err);
+                                                errorNotification(
+                                                    err.code,
+                                                    err.response.data.message
+                                                )
+                                            }).finally(() => {
+                                                onClose()
+                                            })
+                                        }} ml={3}>
+                                            Delete
+                                        </Button>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialogOverlay>
+                        </AlertDialog>
+                    </Stack>
+
+                </Stack>
             </Box>
         </Center>
     );

@@ -20,7 +20,7 @@ public class PatronJDBCDataAccessService implements PatronDao{
     @Override
     public List<Patron> listAllPatrons() {
         var sql = """
-                SELECT id, name, email, age
+                SELECT id, name, email, age, gender
                 FROM patron
                 """;
 
@@ -30,7 +30,7 @@ public class PatronJDBCDataAccessService implements PatronDao{
     @Override
     public Optional<Patron> getPatronById(Integer id) {
         var sql = """
-                SELECT id, name, email, age
+                SELECT id, name, email, age, gender
                 FROM patron
                 WHERE id = ?
                 """;
@@ -42,13 +42,14 @@ public class PatronJDBCDataAccessService implements PatronDao{
     @Override
     public void addPatron(Patron patron) {
         var sql = """
-                INSERT INTO patron (name, email, age)
-                VALUES (?,?,?)
+                INSERT INTO patron (name, email, age, gender)
+                VALUES (?,?,?,?)
                 """;
         jdbcTemplate.update(sql,
                 patron.getName(),
                 patron.getEmail(),
-                patron.getAge());
+                patron.getAge(),
+                patron.getGender().name());
     }
 
     @Override

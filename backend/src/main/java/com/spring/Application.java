@@ -1,6 +1,7 @@
 package com.spring;
 
 import com.github.javafaker.Faker;
+import com.spring.patron.Gender;
 import com.spring.patron.Patron;
 import com.spring.patron.PatronRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -23,11 +24,15 @@ public class Application {
 		return args -> {
 			Faker faker = new Faker();
 			Random random = new Random();
+			String fullname = faker.name().fullName().toLowerCase();
+			String email = faker.internet().safeEmailAddress();
+			int age = random.nextInt(18,76);
+			Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
 			Patron john = new Patron(
-					faker.name().fullName().toLowerCase(),
-					faker.internet().safeEmailAddress(),
-					random.nextInt(18,76)
-			);
+					fullname,
+					email,
+					age,
+					gender);
 
 			List<Patron> patrons = List.of(john);
 			patronRepository.saveAll(patrons);

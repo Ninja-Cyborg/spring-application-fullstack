@@ -1,11 +1,7 @@
 package com.spring.integration;
 
 import com.github.javafaker.Faker;
-import com.spring.patron.Patron;
-import com.spring.patron.PatronDao;
-import com.spring.patron.PatronRegistrationRequest;
-import com.spring.patron.PatronUpdateRequest;
-import org.junit.jupiter.api.Test;
+import com.spring.patron.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
@@ -33,9 +29,10 @@ public class PatronIntegrationTest {
         String name = faker.name().fullName();
         String email = faker.internet().safeEmailAddress();
         int age = faker.random().nextInt(16,100);
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
 
         PatronRegistrationRequest request = new PatronRegistrationRequest(
-                 name, email,age
+                 name, email,age, gender
         );
         // POST request to web Client
 
@@ -62,7 +59,7 @@ public class PatronIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        Patron expectedPatron = new Patron( name, email, age);
+        Patron expectedPatron = new Patron( name, email, age, Gender.NA);
 
         // verify patron is present/added
         // sql preparedStatement not incrementing while deploying on github
@@ -98,9 +95,10 @@ public class PatronIntegrationTest {
         String name = faker.name().fullName();
         String email = faker.internet().safeEmailAddress();
         int age = faker.random().nextInt(16,100);
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
 
         PatronRegistrationRequest request = new PatronRegistrationRequest(
-                name, email,age
+                name, email,age, gender
         );
 
         // POST registration request
@@ -145,9 +143,10 @@ public class PatronIntegrationTest {
         String name = faker.name().fullName();
         String email = faker.internet().safeEmailAddress();
         int age = faker.random().nextInt(16,100);
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
 
         PatronRegistrationRequest request = new PatronRegistrationRequest(
-                name, email,age
+                name, email, age, gender
         );
 
         // POST registration request
@@ -179,7 +178,7 @@ public class PatronIntegrationTest {
 
         // create update request
         PatronUpdateRequest updateRequest = new PatronUpdateRequest(
-                name+ " Lee",email+".ca",21
+                name+ " Lee",email+".ca",21, Gender.MALE
         );
 
         // PUT update request
@@ -204,7 +203,7 @@ public class PatronIntegrationTest {
                 .getResponseBody();
 
         // assert
-        Patron expectedPatron = new Patron(name+ " Lee",email+".ca",21);
+        Patron expectedPatron = new Patron(name+ " Lee",email+".ca",21, Gender.NA);
 
         assertThat(updatedPatron).isEqualTo(expectedPatron);
     }

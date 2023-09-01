@@ -17,6 +17,11 @@ import javax.sql.DataSource;
 @Testcontainers
 public abstract class AbstractTestContainer {
 
+    protected static JdbcTemplate getJDBCTemplate(){
+        return new JdbcTemplate(getDataSource());
+    }
+    protected static final Faker FAKER = new Faker();
+
     @BeforeAll
     static void beforeAll(){
         Flyway flyway = Flyway.configure().dataSource(
@@ -31,8 +36,8 @@ public abstract class AbstractTestContainer {
     protected static final PostgreSQLContainer<?> postgreSQLContainer =
             new PostgreSQLContainer<>("postgres:latest")
                     .withDatabaseName("patron-dao-unit-test")
-                    .withUsername("postgres")
-                    .withPassword("rootpostgrec5");
+                    .withUsername("ninjacyborg")
+                    .withPassword("root");
 
     // mapping dataSource
     @DynamicPropertySource
@@ -59,11 +64,4 @@ public abstract class AbstractTestContainer {
                 .password(postgreSQLContainer.getPassword())
                 .build();
     }
-
-    protected static JdbcTemplate getJDBCTemplate(){
-       return new JdbcTemplate(getDataSource());
-    }
-
-    protected static final Faker FAKER = new Faker();
-
 }
