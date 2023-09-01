@@ -6,12 +6,15 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Random;
+
 import static org.mockito.Mockito.verify;
 
 class PatronJPADataAccessServiceTest {
 
     private PatronJPADataAccessService underTest;
     private AutoCloseable autoCloseable;
+    private Random random;
 
     @Mock
     private PatronRepository patronRepository;
@@ -45,11 +48,17 @@ class PatronJPADataAccessServiceTest {
 
     @Test
     void addPatron() {
+        random = new Random();
+        boolean check = random.nextBoolean();
+        int age = random.nextInt(17, 74);
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+
         Patron patron = new Patron(
                 "Jake Kai",
                 "Jake@hotmail.corp",
-                21
-        );
+                21,
+                gender
+                );
         underTest.addPatron(patron);
 
         verify(patronRepository).save(patron);
@@ -71,7 +80,8 @@ class PatronJPADataAccessServiceTest {
                 1,
                 "Jake Kai",
                 "Jake@hotmail.corp",
-                21
+                21,
+                Gender.MALE
         );
         // update person
         underTest.updatePatron(patron);

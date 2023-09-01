@@ -20,8 +20,8 @@ jobs:
         # Provide the password for postgres
         # db in elastic beanstalk
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: rootpostgrec5
+          POSTGRES_USER: ninjacyborg
+          POSTGRES_PASSWORD: root
           POSTGRES_DB: patron
         ports:
           - 5432:5432

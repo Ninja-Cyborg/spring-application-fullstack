@@ -1,17 +1,24 @@
 server:
-  port: 8081
+  port: 8080
   error:
     include-message: always
 
 cors:
   allowed-origins: "*"
   allowed-methods: "*"
+  allowed-headers: "*"
+  exposed-headers: "*"
 
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/patron
+    # for cloud env as @ is illegal char
+    # cloud credentials
+    # username: postgres
+    # password: rootpostgrec5
+    # localhost credentials
     username: postgres
-    password: root@postgrec5
+    password: root
   jpa:
     hibernate:
       ddl-auto: create-drop

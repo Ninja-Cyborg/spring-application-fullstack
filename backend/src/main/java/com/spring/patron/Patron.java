@@ -25,21 +25,25 @@ public class Patron {
     private String email;
     @Column(nullable = false)
     private int age;
-
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
     public Patron(){
     }
 
-    public Patron(Integer id, String name, String email, int age) {
+    public Patron(Integer id, String name, String email, int age, Gender gender) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.age = age;
+        this.gender = gender;
     }
 
-    public Patron(String name, String email, Integer age) {
+    public Patron(String name, String email, Integer age, Gender gender) {
         this.name = name;
         this.email = email;
         this.age = age;
+        this.gender = gender;
     }
 
     @Override
@@ -49,6 +53,7 @@ public class Patron {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
+                ", gender=" + gender +
                 '}';
     }
 
@@ -57,12 +62,12 @@ public class Patron {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Patron patron = (Patron) o;
-        return Objects.equals(id, patron.id) && age == patron.age && Objects.equals(name, patron.name) && Objects.equals(email, patron.email);
+        return age == patron.age && Objects.equals(id, patron.id) && Objects.equals(name, patron.name) && Objects.equals(email, patron.email) && gender == patron.gender;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, age);
+        return Objects.hash(id, name, email, age, gender);
     }
 
     public Integer getId() {
@@ -95,5 +100,13 @@ public class Patron {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 }

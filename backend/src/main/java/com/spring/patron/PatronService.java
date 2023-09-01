@@ -33,8 +33,8 @@ public class PatronService {
         }
 
         Patron patron = new Patron(
-                request.name(), request.email(), request.age()
-        );
+                request.name(), request.email(), request.age(),
+                request.gender());
 
         patronDao.addPatron(patron);
     }

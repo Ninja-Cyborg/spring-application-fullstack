@@ -23,12 +23,12 @@ class PatronRowMapperTest {
         when(resultSet.getString("name")).thenReturn("Jake");
         when(resultSet.getString("email")).thenReturn("Jake@corp.ca");
         when(resultSet.getInt("age")).thenReturn(21);
-
+        when(resultSet.getString("gender")).thenReturn("MALE");
         // When row is mapped
         Patron actual = patronRowMapper.mapRow(resultSet,1);
 
         // Then assertion
-        Patron expected = new Patron(1, "Jake", "Jake@corp.ca",21);
+        Patron expected = new Patron(1, "Jake", "Jake@corp.ca",21, Gender.MALE);
         assertThat(actual).isEqualTo(expected);
 
     }

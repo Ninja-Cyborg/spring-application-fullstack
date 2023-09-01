@@ -3,20 +3,17 @@ package com.spring.patron;
 import com.spring.exception.DuplicateResourceException;
 import com.spring.exception.RequestValidationException;
 import com.spring.exception.ResourceNotFound;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,8 +39,8 @@ class PatronServiceTest {
     void getPatron() {
         int id = 7;
         Patron patron = new Patron(
-                id, "Jay","Jay@email.co",25
-        );
+                id, "Jay","Jay@email.co",25,
+                Gender.MALE);
 
         when(patronDao.getPatronById(id))
                 .thenReturn(Optional.of(patron));
@@ -73,7 +70,7 @@ class PatronServiceTest {
                 .thenReturn(false);
 
         PatronRegistrationRequest request = new PatronRegistrationRequest(
-                "Jo", email, 18
+                "Jo", email, 18, Gender.MALE
         );
 
         underTest.addPatron(request);
@@ -89,6 +86,8 @@ class PatronServiceTest {
         assertThat(capturedPatron.getName()).isEqualTo(request.name());
         assertThat(capturedPatron.getEmail()).isEqualTo(request.email());
         assertThat(capturedPatron.getAge()).isEqualTo(request.age());
+        assertThat(capturedPatron.getGender()).isEqualTo(request.gender());
+
     }
 
     @Test
@@ -98,7 +97,7 @@ class PatronServiceTest {
         when(patronDao.existsPersonWithEmail(email)).thenReturn(true);
 
         PatronRegistrationRequest request = new PatronRegistrationRequest(
-                "Jo", email, 18
+                "Jo", email, 18, Gender.MALE
         );
 
         // adding patron throw exception
@@ -126,13 +125,14 @@ class PatronServiceTest {
 
         int id = 8;
         String email = "jo@mail.corp";
-        Patron patron = new Patron(id, "Jo", email, 18);
+        Gender gender = Gender.MALE;
+        Patron patron = new Patron(id, "Jo", email, 18, gender);
 
         when(patronDao.getPatronById(id)).thenReturn(Optional.of(patron));
 
         // update patron
         String updateEmail = email + ".co";
-        PatronUpdateRequest updateRequest = new PatronUpdateRequest("Joe", updateEmail, 19);
+        PatronUpdateRequest updateRequest = new PatronUpdateRequest("Joe", updateEmail, 19, gender);
         when(patronDao.existsPersonWithEmail(updateEmail)).thenReturn(false);
 
         underTest.updatePatron(id, updateRequest);
@@ -146,21 +146,24 @@ class PatronServiceTest {
         assertThat(capturedPatron.getName()).isEqualTo(updateRequest.name());
         assertThat(capturedPatron.getEmail()).isEqualTo(updateRequest.email());
         assertThat(capturedPatron.getAge()).isEqualTo(updateRequest.age());
+        assertThat(capturedPatron.getGender()).isEqualTo(updateRequest.gender());
+
     }
 
     @Test
     void doNotUpdatePatronWhenNoChangesPassed(){
         int id = 12;
-        Patron patron = new Patron(id, "Jo", "jo@mail.corp", 18);
+        Gender gender = Gender.MALE;
+        Patron patron = new Patron(id, "Jo", "jo@mail.corp", 18, gender);
         when(patronDao.getPatronById(id)).thenReturn(Optional.of(patron));
 
         // pass update request with same values
-        PatronUpdateRequest updateRequest = new PatronUpdateRequest(patron.getName(), patron.getEmail(), patron.getAge());
+        PatronUpdateRequest updateRequest = new PatronUpdateRequest(patron.getName(), patron.getEmail(), patron.getAge(), patron.getGender());
 
         assertThatThrownBy(() -> underTest.updatePatron(id, updateRequest))
                 .isInstanceOf(RequestValidationException.class).hasMessage("no data changes found");
 
-        // verify patrons do not changes
+        // verify patrons do not change
         verify(patronDao, never()).updatePatron(any());
     }
 }
