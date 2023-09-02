@@ -1,6 +1,7 @@
 # spring-application-fullstack
 
 # Java, React, PostgreSQL, Docker, Kubernetes, GitHub Actions, AWS ElasticBeanStalk
+## Unit testing, Integration Testing, Containerisation, Auto Cloud Infrastructure Deploymen on code push
 
 ##  Under development
 ------------------------------------------------------------------------------------
