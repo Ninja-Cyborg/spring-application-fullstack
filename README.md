@@ -6,4 +6,5 @@
 ------------------------------------------------------------------------------------
 ##  TODO
 ### backend+frontend: Cloud integration
+### Auth (Spring Security)
 ### Repo Documentation
