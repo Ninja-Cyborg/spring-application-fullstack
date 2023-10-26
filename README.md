@@ -9,3 +9,4 @@
 ### backend+frontend: Cloud integration
 ### Auth (Spring Security)
 ### Repo Documentation
+### Test S3 file upload
